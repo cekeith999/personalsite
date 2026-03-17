@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --amber: #E8943A;
+    --amber-light: #F5C678;
+    --amber-pale: #FDF0DC;
+    --cream: #FAF6EE;
+    --sky: #C8DEFF;
+    --sky-deep: #7BAEE8;
+    --irid-1: #C084FC;
+    --irid-2: #F472B6;
+    --irid-3: #FB923C;
+    --irid-4: #60A5FA;
+    --chrome: #E8EDF4;
+    --chrome-glow: #FFFFFF;
+    --ink: #1A1410;
+    --ink-soft: #3D3028;
+    --muted: #8A7A6A;
+    --border: rgba(232,148,58,0.15);
+    
+    --font-display: 'Cormorant Garamond', serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  body {
+    @apply bg-[#FDF0DC] text-[#1A1410];
+    cursor: none;
+    overflow: hidden;
+  }
+
+  @media (pointer: coarse) {
+    body {
+      cursor: auto;
+    }
+  }
+}

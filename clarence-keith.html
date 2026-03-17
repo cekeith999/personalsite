@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clarence Keith</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --amber:       #E8943A;
+  --amber-light: #F5C678;
+  --amber-pale:  #FDF0DC;
+  --cream:       #FAF6EE;
+  --sky:         #C8DEFF;
+  --sky-deep:    #7BAEE8;
+  --irid-1:      #C084FC;
+  --irid-2:      #F472B6;
+  --irid-3:      #FB923C;
+  --irid-4:      #60A5FA;
+  --chrome:      #E8EDF4;
+  --chrome-glow: #FFFFFF;
+  --ink:         #1A1410;
+  --ink-soft:    #3D3028;
+  --muted:       #8A7A6A;
+  --border:      rgba(232,148,58,0.15);
+  --font-display: 'Cormorant Garamond', serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--amber-pale);
+  color: var(--ink);
+  font-family: var(--font-display);
+  cursor: none;
+}
+
+/* ═══════════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════════ */
+#cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--amber);
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, background 0.3s, opacity 0.3s;
+  mix-blend-mode: multiply;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(232,148,58,0.5);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s cubic-bezier(0.16,1,0.3,1),
+              height 0.5s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.3s;
+}
+body.hovering #cursor { width: 6px; height: 6px; }
+body.hovering #cursor-ring { width: 56px; height: 56px; border-color: rgba(232,148,58,0.8); }
+
+/* ═══════════════════════════════════════════════
+   ANIMATED BACKGROUND GRADIENT MESH
+═══════════════════════════════════════════════ */
+#bg {
+  position: fixed; inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(248,196,120,0.45) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 75%, rgba(200,222,255,0.4) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(253,240,220,0.6) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 75% 15%, rgba(192,132,252,0.12) 0%, transparent 50%),
+    var(--cream);
+  animation: bgShift 18s ease-in-out infinite alternate;
+}
+@keyframes bgShift {
+  0%   { filter: hue-rotate(0deg) brightness(1); }
+  33%  { filter: hue-rotate(8deg) brightness(1.02); }
+  66%  { filter: hue-rotate(-5deg) brightness(0.99); }
+  100% { filter: hue-rotate(12deg) brightness(1.03); }
+}
+
+/* Grain overlay */
+#bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════
+   ENTRY SEQUENCE
+═══════════════════════════════════════════════ */
+#entry {
+  position: fixed; inset: 0;
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  background: radial-gradient(ellipse 100% 100% at 50% 50%, #F2A84E 0%, #E8943A 40%, #D4751F 100%);
+}
+
+#entry-word {
+  font-family: var(--font-display);
+  font-size: clamp(72px, 14vw, 180px);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: rgba(255,248,235,0.95);
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.92);
+  animation: wordIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+}
+
+#entry-word span {
+  display: block;
+}
+
+#entry-word .w2 {
+  font-style: italic;
+  color: rgba(255,248,235,0.7);
+}
+
+@keyframes wordIn {
+  to { opacity: 1; transform: scale(1); }
+}
+
+#entry.dissolving #entry-word {
+  animation: wordOut 1.2s cubic-bezier(0.4,0,1,1) forwards;
+}
+
+@keyframes wordOut {
+  0%   { opacity: 1; transform: scale(1) translateY(0); filter: blur(0px); }
+  100% { opacity: 0; transform: scale(1.3) translateY(-30px); filter: blur(20px); }
+}
+
+#entry.dissolving {
+  animation: entryOut 1.4s cubic-bezier(0.4,0,1,1) 0.3s forwards;
+}
+
+@keyframes entryOut {
+  0%   { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+/* ═══════════════════════════════════════════════
+   CANVAS LAYER
+═══════════════════════════════════════════════ */
+#canvas-layer {
+  position: fixed; inset: 0;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 1.2s ease 0.6s;
+}
+#canvas-layer.visible { opacity: 1; }
+
+/* ═══════════════════════════════════════════════
+   CENTER — PHOTO + NAME
+═══════════════════════════════════════════════ */
+#center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px;
+  z-index: 10;
+  will-change: transform;
+}
+
+#photo-ring {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--amber-light), var(--amber), #C4621A);
+  padding: 2px;
+  box-shadow:
+    0 0 40px rgba(232,148,58,0.35),
+    0 0 80px rgba(232,148,58,0.15),
+    inset 0 0 20px rgba(255,255,255,0.1);
+  animation: centerPulse 4s ease-in-out infinite;
+}
+
+@keyframes centerPulse {
+  0%, 100% { box-shadow: 0 0 40px rgba(232,148,58,0.35), 0 0 80px rgba(232,148,58,0.15); }
+  50%       { box-shadow: 0 0 60px rgba(232,148,58,0.5),  0 0 120px rgba(232,148,58,0.25); }
+}
+
+#photo-inner {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F5C678 0%, #E8943A 50%, #FAF6EE 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(232,148,58,0.7);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+/* Replace background with actual photo — uncomment and set src */
+/*
+#photo-inner img {
+  width: 100%; height: 100%;
+  object-fit: cover; border-radius: 50%;
+}
+*/
+
+#center-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+#center-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════
+   NODE CONNECTIONS (SVG)
+═══════════════════════════════════════════════ */
+#connections {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════
+   ORGANIC GLASS NODES
+═══════════════════════════════════════════════ */
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 5;
+  will-change: transform;
+  transition: filter 0.4s ease;
+}
+
+.node:hover { filter: brightness(1.08); }
+.node:hover .node-blob { transform: scale(1.06); }
+.node:hover .node-glow { opacity: 0.9; transform: scale(1.15); }
+.node:hover .node-label { opacity: 1; transform: translateY(0px); }
+
+.node-blob {
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* Organic SVG shapes via clip-path — each node unique */
+.node-blob svg {
+  display: block;
+  filter: drop-shadow(0 4px 24px var(--node-shadow));
+}
+
+.node-glow {
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--node-color) 0%, transparent 70%);
+  opacity: 0.4;
+  filter: blur(20px);
+  transition: opacity 0.5s, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+  z-index: -1;
+  animation: nodePulse 3s ease-in-out infinite;
+  animation-delay: var(--pulse-delay, 0s);
+}
+
+@keyframes nodePulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%       { opacity: 0.6;  transform: scale(1.1); }
+}
+
+.node-label {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-soft);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.6;
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+
+.node-num {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════
+   NODE INTERIOR (EXPANDED VIEW)
+═══════════════════════════════════════════════ */
+#node-view {
+  position: fixed; inset: 0;
+  z-index: 800;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s cubic-bezier(0.25,1,0.5,1);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#node-view.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#node-view-bg {
+  position: fixed; inset: 0;
+  z-index: -1;
+  transition: background 0.7s ease;
+}
+
+#node-view-inner {
+  min-height: 100vh;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 100px 60px 120px;
+  position: relative;
+}
+
+.nv-back {
+  position: fixed;
+  top: 40px; left: 48px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-soft);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s, color 0.2s;
+  display: flex; align-items: center; gap: 10px;
+  z-index: 10;
+}
+.nv-back:hover { opacity: 1; color: var(--amber); }
+.nv-back::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: currentColor;
+  display: block;
+}
+
+.nv-section-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  opacity: 0.7;
+}
+
+.nv-title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 7vw, 96px);
+  font-weight: 300;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  margin-bottom: 48px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(26,20,16,0.1);
+}
+.nv-title em { font-style: italic; }
+
+.nv-body {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+  max-width: 620px;
+}
+
+.nv-body p + p { margin-top: 22px; }
+
+.nv-item {
+  padding: 28px 0;
+  border-bottom: 1px solid rgba(26,20,16,0.07);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.nv-item-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding-top: 4px;
+}
+
+.nv-item-title {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.nv-item-desc {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.nv-stats {
+  display: flex;
+  gap: 52px;
+  margin-top: 52px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(26,20,16,0.07);
+  flex-wrap: wrap;
+}
+
+.nv-stat-value {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.nv-stat-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nv-person {
+  padding: 28px 0;
+  border-bottom: 1px solid rgba(26,20,16,0.07);
+}
+.nv-person-name {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.nv-person-role {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.nv-person-desc {
+  font-size: 15px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.nv-thought {
+  padding: 32px 0;
+  border-bottom: 1px solid rgba(26,20,16,0.07);
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════
+   OPENING STATEMENT (after entry)
+═══════════════════════════════════════════════ */
+#statement {
+  position: fixed;
+  bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  text-align: center;
+  max-width: 680px;
+  padding: 0 40px;
+  opacity: 0;
+  transition: opacity 1s ease 1.8s;
+  pointer-events: none;
+}
+#statement.visible { opacity: 1; }
+
+#statement p {
+  font-family: var(--font-display);
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+/* ═══════════════════════════════════════════════
+   CONTACT FOOTER
+═══════════════════════════════════════════════ */
+#contact-bar {
+  position: fixed;
+  top: 36px; right: 44px;
+  z-index: 200;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 1s ease 2.2s;
+  display: flex; align-items: center; gap: 28px;
+}
+#contact-bar.visible { opacity: 1; }
+#contact-bar a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+#contact-bar a:hover { color: var(--amber); }
+
+#site-label {
+  position: fixed;
+  top: 36px; left: 44px;
+  z-index: 200;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 1s ease 2.2s;
+}
+#site-label.visible { opacity: 1; }
+
+/* ═══════════════════════════════════════════════
+   IRIDESCENT GRADIENT (mid-layer nodes)
+═══════════════════════════════════════════════ */
+.irid-text {
+  background: linear-gradient(135deg, var(--irid-1), var(--irid-2), var(--irid-3), var(--irid-4));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 300% 300%;
+  animation: iridShift 4s ease-in-out infinite;
+}
+@keyframes iridShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="bg"></div>
+
+<!-- ── ENTRY SEQUENCE ── -->
+<div id="entry">
+  <div id="entry-word">
+    <span class="w1">Build</span>
+    <span class="w2">the World</span>
+  </div>
+</div>
+
+<!-- ── CANVAS LAYER ── -->
+<div id="canvas-layer">
+
+  <!-- SVG connection lines -->
+  <svg id="connections" xmlns="http://www.w3.org/2000/svg"></svg>
+
+  <!-- CENTER -->
+  <div id="center">
+    <div id="photo-ring">
+      <div id="photo-inner">
+        <!-- <img src="your-photo.jpg" alt="Clarence Keith"> -->
+        <span style="text-align:center;line-height:1.4;padding:12px;font-size:8px;color:rgba(180,100,30,0.6);">Your<br>Photo</span>
+      </div>
+    </div>
+    <div id="center-name">Clarence Keith</div>
+    <div id="center-tag">Founder · Artist · Learner · Philosopher</div>
+  </div>
+
+  <!-- NODES injected by JS -->
+
+</div>
+
+<!-- ── OPENING STATEMENT ── -->
+<div id="statement">
+  <p>I'm a founder, artist, learner, philosopher — all four, all at once, because that's just who I am. The interesting thing is what happens when you stop trying to pick one lane. The problems and opportunities you find there, nobody else is looking at yet.</p>
+</div>
+
+<!-- ── TOP BAR ── -->
+<div id="site-label">clarencekeith.com</div>
+<div id="contact-bar">
+  <a href="mailto:clarence@clarencekeith.com">clarence@clarencekeith.com</a>
+  <a href="#" onclick="openNode('thinking'); return false;">The Light ↗</a>
+</div>
+
+<!-- ── NODE EXPANDED VIEW ── -->
+<div id="node-view">
+  <div id="node-view-bg"></div>
+  <div id="node-view-inner">
+    <div class="nv-back" id="nv-back">Back</div>
+    <div id="nv-content"></div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════════ */
+const cur = document.getElementById('cursor');
+const curR = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx + 'px';
+  cur.style.top  = my + 'px';
+});
+
+(function animCursor() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  curR.style.left = rx + 'px';
+  curR.style.top  = ry + 'px';
+  requestAnimationFrame(animCursor);
+})();
+
+document.querySelectorAll('a, .node, .nv-back, #nv-back').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+});
+
+/* ═══════════════════════════════════════════════
+   PARALLAX
+═══════════════════════════════════════════════ */
+const parallaxLayers = [];
+document.addEventListener('mousemove', e => {
+  const cx = window.innerWidth  / 2;
+  const cy = window.innerHeight / 2;
+  const dx = (e.clientX - cx) / cx;
+  const dy = (e.clientY - cy) / cy;
+  parallaxLayers.forEach(({el, depth}) => {
+    el.style.transform = `translate(calc(-50% + ${dx * depth}px), calc(-50% + ${dy * depth}px))`;
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   NODE DATA
+═══════════════════════════════════════════════ */
+const nodes = [
+  {
+    id: 'building',
+    label: 'What I\'m Building',
+    num: '01',
+    color: '#E8943A',
+    colorSoft: 'rgba(232,148,58,0.18)',
+    shadow: 'rgba(232,148,58,0.4)',
+    // position: angle in degrees from center, distance
+    angle: -60, dist: 240,
+    size: 88,
+    morphPath: 'M50,8 C72,6 88,22 90,42 C93,62 80,80 60,86 C40,93 18,82 10,62 C2,42 10,20 28,11 C36,6 42,9 50,8Z',
+    bgGrad: `linear-gradient(135deg, #FDF0DC 0%, #FAF6EE 100%)`,
+    content: () => `
+      <div class="nv-section-tag">01 — Currently Building</div>
+      <h2 class="nv-title">What I'm<br><em>Building</em></h2>
+      <div class="nv-body">
+        <p>Nalana is a design tool that lets you build cars, phones, furniture, architecture — anything — just by speaking. You describe what you want. It builds it in 3D, production-ready, immediately usable in any professional pipeline.</p>
+        <p>Most AI 3D tools generate geometry from scratch. The output looks right but breaks the moment an engineer or designer tries to use it. Nalana is built as a soft fork of Blender, using Blender's native operations and modifiers under the hood. Every object it creates is clean, editable, and pipeline-compatible from day one.</p>
+        <p>The people who use it daily are the ones it learns from. The longer you work with Nalana, the more it understands your design language — your proportions, your aesthetic instincts, your preferences. This builds a moat of switching costs compounding over time.</p>
+        <p>I'm uniquely positioned to build this. I'm a designer who understands 3D pipelines from the inside — a practitioner who lived the problem, then built the solution.</p>
+      </div>
+      <div class="nv-stats">
+        <div><span class="nv-stat-value">Nike</span><span class="nv-stat-label">Innovation Interest</span></div>
+        <div><span class="nv-stat-value">Top 8</span><span class="nv-stat-label">USC NVSC</span></div>
+        <div><span class="nv-stat-value">2024</span><span class="nv-stat-label">Founded</span></div>
+      </div>
+    `
+  },
+  {
+    id: 'thinking',
+    label: 'How I Think',
+    num: '02',
+    color: '#C084FC',
+    colorSoft: 'rgba(192,132,252,0.15)',
+    shadow: 'rgba(192,132,252,0.35)',
+    angle: 0, dist: 280,
+    size: 80,
+    morphPath: 'M52,6 C70,4 88,18 92,38 C96,60 84,82 64,88 C44,95 20,84 10,64 C0,44 8,18 28,9 C38,4 44,7 52,6Z',
+    bgGrad: `linear-gradient(135deg, #F8F0FF 0%, #EEE8FF 100%)`,
+    content: () => `
+      <div class="nv-section-tag">02 — Thinking</div>
+      <h2 class="nv-title">How I<br><em>Think</em></h2>
+      <div class="nv-body">
+        <p>I call myself a builder. Everything I do starts with an idea.</p>
+        <p>Your ability to learn, ideate, and execute is most of what determines where you end up — alongside the connections you maintain and create, the will you have to win, and the openness to keep learning. The skill of acquiring skills. That's what I'm always working to sharpen.</p>
+        <p>I sit at the overlap of technical fluency, societal intuition, and pure intellect. Most people develop one. I think you need all three — and the people who have all three are about to matter a lot more than they did before.</p>
+      </div>
+      <div class="nv-body" style="margin-top:12px">
+        <p>I write about this in <em>The Light</em> — a newsletter about authentic creation, what it means to make something that couldn't have come from anyone else, and what gets in the way of that.</p>
+      </div>
+    `
+  },
+  {
+    id: 'made',
+    label: 'What I\'ve Made',
+    num: '03',
+    color: '#FB923C',
+    colorSoft: 'rgba(251,146,60,0.15)',
+    shadow: 'rgba(251,146,60,0.35)',
+    angle: 60, dist: 250,
+    size: 84,
+    morphPath: 'M48,5 C68,3 90,16 93,38 C96,60 82,84 60,90 C38,96 14,82 7,60 C0,38 12,14 32,7 C38,4 42,6 48,5Z',
+    bgGrad: `linear-gradient(135deg, #FFF4EE 0%, #FEF0E6 100%)`,
+    content: () => `
+      <div class="nv-section-tag">03 — Work</div>
+      <h2 class="nv-title">What I've<br><em>Made</em></h2>
+      <div class="nv-item"><div class="nv-item-label">2024–Present</div><div><div class="nv-item-title">Nalana</div><div class="nv-item-desc">Voice-controlled 3D design tool. Production-ready geometry. Built on Blender. Nike Innovation interest, USC NVSC quarterfinals.</div></div></div>
+      <div class="nv-item"><div class="nv-item-label">2023–2024</div><div><div class="nv-item-title">Sidian</div><div class="nv-item-desc">A line of 3D printed shoes. Six wearable pairs, designed and produced from scratch. Proof that I don't just design things that live on screens.</div></div></div>
+      <div class="nv-item"><div class="nv-item-label">2023</div><div><div class="nv-item-title">Honda Innovation</div><div class="nv-item-desc">Speculative vehicle concept design. Worked inside one of the world's most recognized industrial design organizations as a junior designer.</div></div></div>
+      <div class="nv-item"><div class="nv-item-label">2022–2023</div><div><div class="nv-item-title">MATTE Projects</div><div class="nv-item-desc">Retail displays and product visualizations for Cartier, Macallan, Vans. Real clients, real production, real deadlines.</div></div></div>
+      <div class="nv-item"><div class="nv-item-label">2024</div><div><div class="nv-item-title">FSF National Case Study</div><div class="nv-item-desc">Won the Fashion Scholarship Fund National Case Study Competition.</div></div></div>
+      <div class="nv-item"><div class="nv-item-label">2024</div><div><div class="nv-item-title">Google Makeathon</div><div class="nv-item-desc">Won. Built something that worked under pressure with people I'd never worked with before.</div></div></div>
+      <div class="nv-item"><div class="nv-item-label">2023</div><div><div class="nv-item-title">Faith in MDVS</div><div class="nv-item-desc">Cactus Jack Design Competition entry. Oversized leather muscle tee about spiritual expression and intentional mark-making.</div></div></div>
+    `
+  },
+  {
+    id: 'work',
+    label: 'How I Work',
+    num: '04',
+    color: '#F59E0B',
+    colorSoft: 'rgba(245,158,11,0.15)',
+    shadow: 'rgba(245,158,11,0.35)',
+    angle: 130, dist: 240,
+    size: 76,
+    morphPath: 'M50,7 C70,5 88,20 91,42 C94,64 80,84 58,89 C36,94 14,80 8,58 C2,36 14,14 34,8 C40,5 44,8 50,7Z',
+    bgGrad: `linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%)`,
+    content: () => `
+      <div class="nv-section-tag">04 — Process</div>
+      <h2 class="nv-title">How I<br><em>Work</em></h2>
+      <div class="nv-body">
+        <p>I keep a style journal. Over 200 entries and counting. Written observations about why something works, why I like it, how it could be better, and how I could use it. It covers art, but also what I see in the business and economic world. It's the practice underneath the practice.</p>
+        <p>When I built Nalana, I wasn't trying to build a voice interface — I was drawn to the space of 3D and AI, imagining the possibilities within that combination. I followed that curiosity and found a problem space that was deeper than my knowledge at the time. I worked to teach myself, ask professionals, and build within the space. After a while, came Nalana. The tool came from curiosity, learning, problem solving, then finally vision.</p>
+        <p>I move between making and thinking constantly. A sketch teaches me something a conversation couldn't. A conversation teaches me something a sketch couldn't.</p>
+        <p>I work best when I'm slightly over my head — intentionally. The projects that taught me the most were the ones where I had to become someone new to finish them.</p>
+      </div>
+    `
+  },
+  {
+    id: 'origin',
+    label: 'Where I\'m From',
+    num: '05',
+    color: '#84CC16',
+    colorSoft: 'rgba(132,204,22,0.1)',
+    shadow: 'rgba(132,204,22,0.25)',
+    angle: 180, dist: 260,
+    size: 72,
+    morphPath: 'M52,8 C72,6 90,22 92,44 C94,66 78,86 56,90 C34,94 12,80 7,58 C2,36 16,12 38,7 C44,5 48,9 52,8Z',
+    bgGrad: `linear-gradient(135deg, #F8FEF0 0%, #F4FCE8 100%)`,
+    content: () => `
+      <div class="nv-section-tag">05 — Origin</div>
+      <h2 class="nv-title">Where I'm<br><em>From</em></h2>
+      <div class="nv-body">
+        <p>I'm a junior at USC's Iovine and Young Academy — a program that trains people to work at the intersection of technology, business, and liberal arts. Small, hard to explain, and exactly right for me.</p>
+        <p>Before IYA I was at Emory, then USC Marshall. The path wasn't linear. It was searching — for the right context, the right people, the right permission to be all the things I am. I found it.</p>
+        <p>I grew up interested in everything. That used to feel like a liability. It's starting to feel like the whole point.</p>
+      </div>
+      <div class="nv-stats">
+        <div><span class="nv-stat-value">2027</span><span class="nv-stat-label">Graduating</span></div>
+        <div><span class="nv-stat-value">IYA</span><span class="nv-stat-label">USC Los Angeles</span></div>
+      </div>
+    `
+  },
+  {
+    id: 'network',
+    label: 'Who\'s In My Corner',
+    num: '06',
+    color: '#60A5FA',
+    colorSoft: 'rgba(96,165,250,0.15)',
+    shadow: 'rgba(96,165,250,0.3)',
+    angle: 240, dist: 250,
+    size: 80,
+    morphPath: 'M50,6 C70,4 90,18 93,40 C96,62 82,84 60,90 C38,96 12,82 7,60 C2,38 14,14 36,7 C42,4 44,7 50,6Z',
+    bgGrad: `linear-gradient(135deg, #EEF6FF 0%, #E8F2FF 100%)`,
+    content: () => `
+      <div class="nv-section-tag">06 — Network</div>
+      <h2 class="nv-title">Who's In My<br><em>Corner</em></h2>
+      <div class="nv-person"><div class="nv-person-name">Aven Wright</div><div class="nv-person-role">Senior Manager, Jordan Brand Global</div><div class="nv-person-desc">My FSF mentor. He's shown me what it looks like to lead with taste inside a massive institution.</div></div>
+      <div class="nv-person"><div class="nv-person-name">Adam Hiler</div><div class="nv-person-role">Senior Director of 3D Excellence, Jordan Brand</div><div class="nv-person-desc">An advisor who understands what Nalana is trying to do and why it matters to the industry.</div></div>
+      <div class="nv-person"><div class="nv-person-name">Eric Quick</div><div class="nv-person-role">CEO of Caffree · IYA Alum · Lecturer</div><div class="nv-person-desc">The clearest thinker I know about what it takes to build a company from a creative practice.</div></div>
+      <div class="nv-person"><div class="nv-person-name">Ghadi Nehme</div><div class="nv-person-role">MIT DeCoDE Lab Connection</div><div class="nv-person-desc">A bridge between the academic side of AI and design and the applied side.</div></div>
+      <div style="margin-top:40px; font-size:15px; font-style:italic; color:var(--muted); line-height:1.8;">These are people who have given me real time, real feedback, and real belief. That means something.</div>
+    `
+  },
+  {
+    id: 'thoughts',
+    label: 'What I\'m Thinking About',
+    num: '07',
+    color: '#F472B6',
+    colorSoft: 'rgba(244,114,182,0.12)',
+    shadow: 'rgba(244,114,182,0.3)',
+    angle: 300, dist: 240,
+    size: 78,
+    morphPath: 'M54,7 C74,5 92,20 93,42 C94,64 78,86 56,91 C34,96 10,82 6,60 C2,38 16,12 38,7 C44,5 50,8 54,7Z',
+    bgGrad: `linear-gradient(135deg, #FFF0F8 0%, #FEE8F4 100%)`,
+    content: () => `
+      <div class="nv-section-tag">07 — Current Thinking</div>
+      <h2 class="nv-title">What I'm<br><em>Thinking About</em></h2>
+      <div class="nv-thought">3D as infrastructure. A way of representing the physical world that AI can reason about. The implications go far beyond design tools — healthcare, manufacturing, simulation, education. Nalana is one application. The underlying idea is much larger.</div>
+      <div class="nv-thought">What it means to build a creative practice that compounds. Every project should make the next one easier, richer, more distinctly yours. I'm early in that but I can feel it starting to happen.</div>
+      <div class="nv-thought">What authentic creation looks like in an era when generation is cheap. If anyone can make anything, the question becomes: what makes something worth making? I write about this in The Light. I don't have the answer yet.</div>
+      <div style="margin-top:52px; padding-top:40px; border-top: 1px solid rgba(26,20,16,0.07)">
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:20px;">The Invitation</div>
+        <div style="font-size:19px;font-weight:300;line-height:1.8;color:var(--ink-soft);margin-bottom:24px;">If something here resonates — the work, the thinking, the questions — I want to hear from you.</div>
+        <a href="mailto:clarence@clarencekeith.com" style="font-family:var(--font-mono);font-size:11px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;">clarence@clarencekeith.com</a>
+      </div>
+    `
+  }
+];
+
+/* ═══════════════════════════════════════════════
+   BUILD NODES
+═══════════════════════════════════════════════ */
+const canvas = document.getElementById('canvas-layer');
+const svg    = document.getElementById('connections');
+const CX = window.innerWidth  / 2;
+const CY = window.innerHeight / 2;
+
+const nodePositions = {};
+
+nodes.forEach((n, i) => {
+  const rad  = (n.angle * Math.PI) / 180;
+  const x    = CX + Math.cos(rad) * n.dist;
+  const y    = CY + Math.sin(rad) * n.dist;
+  nodePositions[n.id] = {x, y};
+
+  // Wrapper
+  const el = document.createElement('div');
+  el.className = 'node';
+  el.id = 'node-' + n.id;
+  el.style.left = x + 'px';
+  el.style.top  = y + 'px';
+  el.style.setProperty('--node-color', n.colorSoft);
+  el.style.setProperty('--node-shadow', n.shadow);
+  el.style.setProperty('--pulse-delay', (i * 0.4) + 's');
+
+  // Glow
+  const glow = document.createElement('div');
+  glow.className = 'node-glow';
+  glow.style.background = `radial-gradient(circle, ${n.color}50 0%, transparent 70%)`;
+
+  // Blob SVG
+  const blob = document.createElement('div');
+  blob.className = 'node-blob';
+  const s = n.size;
+  blob.innerHTML = `
+    <svg width="${s}" height="${s}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="g${n.id}" cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.85)"/>
+          <stop offset="40%" stop-color="${n.color}30"/>
+          <stop offset="100%" stop-color="${n.color}55"/>
+        </radialGradient>
+        <filter id="f${n.id}">
+          <feGaussianBlur stdDeviation="1" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+      </defs>
+      <path d="${n.morphPath}"
+        fill="url(#g${n.id})"
+        stroke="rgba(255,255,255,0.7)"
+        stroke-width="0.8"
+        filter="url(#f${n.id})"
+      />
+      <path d="${n.morphPath}"
+        fill="none"
+        stroke="${n.color}"
+        stroke-width="0.4"
+        opacity="0.5"
+      />
+    </svg>
+  `;
+
+  // Label
+  const label = document.createElement('div');
+  label.className = 'node-label';
+  label.textContent = n.label;
+
+  const num = document.createElement('div');
+  num.className = 'node-num';
+  num.textContent = n.num;
+
+  el.appendChild(glow);
+  el.appendChild(blob);
+  el.appendChild(label);
+  el.appendChild(num);
+
+  el.addEventListener('click', () => openNode(n.id));
+  el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+
+  canvas.appendChild(el);
+
+  // Parallax
+  parallaxLayers.push({ el, depth: 8 + (i % 3) * 4 });
+});
+
+// Center parallax
+parallaxLayers.push({ el: document.getElementById('center'), depth: 3 });
+
+/* ═══════════════════════════════════════════════
+   DRAW CONNECTIONS
+═══════════════════════════════════════════════ */
+function drawConnections() {
+  const W = window.innerWidth, H = window.innerHeight;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+
+  // Connect each node to center
+  nodes.forEach((n, i) => {
+    const {x, y} = nodePositions[n.id];
+    const gradId = 'cg' + n.id;
+
+    const grad = document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+    grad.setAttribute('id', gradId);
+    grad.setAttribute('x1', CX); grad.setAttribute('y1', CY);
+    grad.setAttribute('x2', x);  grad.setAttribute('y2', y);
+    grad.setAttribute('gradientUnits', 'userSpaceOnUse');
+
+    const s1 = document.createElementNS('http://www.w3.org/2000/svg','stop');
+    s1.setAttribute('offset','0%');
+    s1.setAttribute('stop-color', '#E8943A');
+    s1.setAttribute('stop-opacity','0.3');
+
+    const s2 = document.createElementNS('http://www.w3.org/2000/svg','stop');
+    s2.setAttribute('offset','100%');
+    s2.setAttribute('stop-color', n.color);
+    s2.setAttribute('stop-opacity','0.15');
+
+    grad.appendChild(s1); grad.appendChild(s2);
+    defs.appendChild(grad);
+
+    // Curved path
+    const mx2 = (CX + x) / 2 + (Math.random() - 0.5) * 60;
+    const my2 = (CY + y) / 2 + (Math.random() - 0.5) * 60;
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', `M ${CX} ${CY} Q ${mx2} ${my2} ${x} ${y}`);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', `url(#${gradId})`);
+    path.setAttribute('stroke-width', '0.8');
+
+    // Animated signal dot
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('r','2');
+    circle.setAttribute('fill', n.color);
+    circle.setAttribute('opacity','0.7');
+    const anim = document.createElementNS('http://www.w3.org/2000/svg','animateMotion');
+    anim.setAttribute('dur', (3 + i * 0.7) + 's');
+    anim.setAttribute('repeatCount','indefinite');
+    anim.setAttribute('begin', (i * 0.5) + 's');
+    const mpath = document.createElementNS('http://www.w3.org/2000/svg','mpath');
+    mpath.setAttribute('href', '#p' + n.id);
+    anim.appendChild(mpath);
+    circle.appendChild(anim);
+
+    path.setAttribute('id', 'p' + n.id);
+    svg.appendChild(path);
+    svg.appendChild(circle);
+  });
+
+  svg.insertBefore(defs, svg.firstChild);
+}
+
+drawConnections();
+
+/* ═══════════════════════════════════════════════
+   ENTRY SEQUENCE
+═══════════════════════════════════════════════ */
+const entry  = document.getElementById('entry');
+const canvasL = document.getElementById('canvas-layer');
+const stmt   = document.getElementById('statement');
+const ctBar  = document.getElementById('contact-bar');
+const siteLbl= document.getElementById('site-label');
+
+setTimeout(() => {
+  entry.classList.add('dissolving');
+  setTimeout(() => {
+    entry.style.display = 'none';
+    canvasL.classList.add('visible');
+    stmt.classList.add('visible');
+    ctBar.classList.add('visible');
+    siteLbl.classList.add('visible');
+  }, 1500);
+}, 2400);
+
+/* ═══════════════════════════════════════════════
+   NODE OPEN / CLOSE
+═══════════════════════════════════════════════ */
+const nodeView = document.getElementById('node-view');
+const nodeViewBg = document.getElementById('node-view-bg');
+const nvContent = document.getElementById('nv-content');
+const nvBack = document.getElementById('nv-back');
+
+function openNode(id) {
+  const n = nodes.find(n => n.id === id);
+  if (!n) return;
+
+  nvContent.innerHTML = n.content();
+  nodeViewBg.style.background = n.bgGrad;
+  nodeView.classList.add('open');
+  nodeView.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeNode() {
+  nodeView.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+nvBack.addEventListener('click', closeNode);
+nodeView.addEventListener('click', e => {
+  if (e.target === nodeView) closeNode();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeNode();
+});
+
+/* ═══════════════════════════════════════════════
+   RESIZE
+═══════════════════════════════════════════════ */
+window.addEventListener('resize', () => {
+  svg.innerHTML = '';
+  drawConnections();
+});
+</script>
+</body>
+</html>
