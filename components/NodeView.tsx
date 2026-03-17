@@ -132,6 +132,34 @@ export default function NodeView({ nodeId, onClose }: NodeViewProps) {
                 </div>
               )}
 
+              {/* Demo Video (Building node) */}
+              {node.id === 'building' && (
+                <motion.div variants={itemVariants} className="mb-10 max-w-[620px]">
+                  <div className="aspect-video w-full rounded-xl overflow-hidden bg-[#0e0e0b] border border-[#7C6FE0]/20 flex flex-col items-center justify-center relative">
+                    {node.videoUrl ? (
+                      <iframe 
+                        src={node.videoUrl}
+                        className="w-full h-full border-none"
+                        allow="autoplay"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <>
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#7C6FE0]">
+                          <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                        </svg>
+                        <div className="font-mono text-[10px] text-[#8A7AA0] mt-3 uppercase tracking-wider">
+                          Demo Coming Soon
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div className="font-mono text-[9px] text-[#8A7AA0] mt-3 uppercase tracking-widest text-center">
+                    Nalana — voice to production-ready 3D
+                  </div>
+                </motion.div>
+              )}
+
               {/* Items (Made node) */}
               {node.content.items && (
                 <div className="mb-8">

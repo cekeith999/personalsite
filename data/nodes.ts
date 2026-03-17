@@ -13,6 +13,7 @@ export interface NodeData {
   morphPath: string;
   bgGrad: string;
   pulseDelay?: number;
+  videoUrl?: string;
   content: {
     sectionTag: string;
     titleFirst: string;
@@ -40,6 +41,7 @@ export const nodes: NodeData[] = [
     morphPath: 'M50,8 C72,6 88,22 90,42 C93,62 80,80 60,86 C40,93 18,82 10,62 C2,42 10,20 28,11 C36,6 42,9 50,8Z',
     bgGrad: `linear-gradient(135deg, #FDF0DC 0%, #FAF6EE 100%)`,
     pulseDelay: 0,
+    videoUrl: 'https://drive.google.com/file/d/15nXMbE66oXN2WyDxt3zzD-oWebW6JY7J/preview', // Google Drive preview link
     content: {
       sectionTag: '01 — Currently Building',
       titleFirst: 'What I\'m',
