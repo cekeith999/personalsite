@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { nodes } from '../data/nodes';
 
 interface NodeViewProps {
@@ -32,6 +33,7 @@ const itemVariants = {
 
 export default function NodeView({ nodeId, onClose }: NodeViewProps) {
   const node = nodes.find(n => n.id === nodeId);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   // Close on ESC
   useEffect(() => {
@@ -171,13 +173,31 @@ export default function NodeView({ nodeId, onClose }: NodeViewProps) {
                       <div className="font-mono text-[10px] text-[#5C4D73] tracking-[0.1em] uppercase pt-1">
                         {item.label}
                       </div>
-                      <div>
+                      <div className="w-full overflow-hidden">
                         <div className="text-[20px] font-normal text-[#1A1410] mb-1.5 tracking-[-0.01em]">
                           {item.title}
                         </div>
                         <div className="text-[14px] italic text-[#5C4D73] leading-[1.7]">
                           {item.desc}
                         </div>
+                        {item.images && item.images.length > 0 && (
+                          <div className="mt-5 flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar">
+                            {item.images.map((img, imgIdx) => (
+                              <div key={imgIdx} className="relative w-[160px] h-[100px] flex-shrink-0 snap-start overflow-hidden rounded-lg bg-[#1A1410]/5">
+                                <Image
+                                  src={img.src}
+                                  alt={img.alt || item.title}
+                                  fill
+                                  sizes="160px"
+                                  style={{ objectFit: 'cover' }}
+                                  loading="lazy"
+                                  onClick={() => setSelectedImage(img.src)}
+                                  className="cursor-pointer hover:opacity-90 transition-opacity"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </motion.div>
                   ))}
@@ -189,6 +209,18 @@ export default function NodeView({ nodeId, onClose }: NodeViewProps) {
                 <div className="mb-8">
                   {node.content.people.map((person, i) => (
                     <motion.div key={i} variants={itemVariants} className="mb-8">
+                      {person.image && (
+                        <div className="mb-4">
+                          <Image
+                            src={person.image}
+                            alt={person.name}
+                            width={80}
+                            height={80}
+                            style={{ borderRadius: '50%' }}
+                            loading="lazy"
+                          />
+                        </div>
+                      )}
                       <div className="text-[20px] font-normal text-[#1A1410] mb-1">
                         {person.name}
                       </div>
@@ -259,6 +291,30 @@ export default function NodeView({ nodeId, onClose }: NodeViewProps) {
           </div>
         </motion.div>
       )}
+
+      {/* Image Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-[1000] flex items-center justify-center bg-[#1A1410]/90 p-4 md:p-10 backdrop-blur-sm cursor-pointer"
+          >
+            <div className="relative w-full h-full max-w-6xl max-h-[90vh]">
+              <Image
+                src={selectedImage}
+                alt="Expanded view"
+                fill
+                style={{ objectFit: 'contain' }}
+                quality={100}
+                className="drop-shadow-2xl"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AnimatePresence>
   );
 }

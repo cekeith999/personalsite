@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import Image from 'next/image';
 import { nodes } from '../data/nodes';
 import Node from './Node';
 
@@ -167,7 +168,14 @@ export default function NodeCanvas({ onNodeOpen }: { onNodeOpen: (id: string) =>
               }}
             >
               <div className="w-full h-full bg-cream rounded-full overflow-hidden flex items-center justify-center relative">
-                <img src="/images/Mehead.webp" alt="Clarence" className="w-full h-full object-cover" />
+                <Image
+                  src="/images/me/clarence-main.webp"
+                  alt="Clarence Keith"
+                  fill
+                  sizes="120px"
+                  style={{ objectFit: 'cover' }}
+                  priority
+                />
               </div>
             </div>
             <div className="mt-3 font-mono text-sm tracking-[0.25em] uppercase text-[#251C33]">
@@ -384,7 +392,14 @@ export default function NodeCanvas({ onNodeOpen }: { onNodeOpen: (id: string) =>
           >
             {/* Inner mask for image */}
             <div className="w-full h-full bg-cream rounded-full overflow-hidden flex items-center justify-center relative">
-              <img src="/images/clarence.webp" alt="Clarence" className="w-full h-full object-cover" />
+              <Image
+                src="/images/me/clarence-main.webp"
+                alt="Clarence Keith"
+                fill
+                sizes="120px"
+                style={{ objectFit: 'cover' }}
+                priority
+              />
             </div>
           </motion.div>
 

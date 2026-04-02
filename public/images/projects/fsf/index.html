@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Scholarship Fund - Clarence Keith</title>
+    <link rel="icon" type="image/png" href="../meimages/mehead favicon.webp">
+    <link rel="shortcut icon" type="image/png" href="../meimages/mehead favicon.webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen flex flex-col" style="background-color: var(--bg-primary); color: var(--text-primary);">
+
+    <!-- Contact Popup -->
+    <div id="contact-popup" class="popup-overlay">
+        <div class="popup-content">
+            <button class="popup-close" id="popup-close">&times;</button>
+            <h2 class="text-3xl font-bold text-[#A30000] mb-6">Get In Touch</h2>
+            <form id="popup-contact-form" class="space-y-4" action="https://formspree.io/f/mkgqyjaa" method="POST">
+                <div>
+                    <label for="popup-name" class="block text-sm font-medium text-black mb-2">Name</label>
+                    <input type="text" id="popup-name" name="name" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-white focus:border-transparent transition-colors bg-white text-[#A30000]">
+                </div>
+                <div>
+                    <label for="popup-email" class="block text-sm font-medium text-black mb-2">Email/Phone
+                        Number</label>
+                    <input type="text" id="popup-email" name="contact" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-white focus:border-transparent transition-colors bg-white text-[#A30000]">
+                </div>
+                <div>
+                    <label for="popup-message" class="block text-sm font-medium text-black mb-2">Message</label>
+                    <textarea id="popup-message" name="message" rows="4" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-white focus:border-transparent transition-colors resize-none bg-white text-[#A30000]"></textarea>
+                </div>
+                <!-- Hidden field to send to both emails -->
+                <input type="hidden" name="_cc" value="jordankeith999@gmail.com">
+                <input type="hidden" name="_replyto" value="cekeith@usc.edu">
+                <button type="submit"
+                    class="w-full bg-black text-white py-3 rounded-lg font-bold text-lg hover:bg-gray-800 transition-colors duration-300">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="custom-cursor" id="custom-cursor"></div>
+
+    <div class="zoom-modal" id="zoom-modal">
+        <div class="zoom-modal-content">
+            <button class="zoom-close" id="zoom-close">&times;</button>
+            <img id="zoom-image" src="" alt="">
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="w-full p-6 sm:p-8 sticky top-0 z-50 bg-[#A30000] shadow-sm">
+        <nav class="flex justify-between items-center max-w-7xl mx-auto">
+            <div class="flex-1">
+                <a class="text-lg font-bold nav-link text-white hover:text-black transition-colors duration-300"
+                    id="contact-popup-trigger">Reach out!</a>
+            </div>
+            <div class="flex-1 text-center">
+                <a class="text-3xl font-bold tracking-wider nav-link text-white hover:text-black transition-colors duration-300"
+                    href="../index.html">Clarence Keith</a>
+                <div class="text-sm font-medium tracking-widest text-white/80 mt-1">ARTIST/DESIGNER</div>
+            </div>
+            <div class="flex-1 flex justify-end space-x-6">
+                <a href="https://www.instagram.com/ck.mdvs/" target="_blank" rel="noopener noreferrer"
+                    class="instagram-link">
+                    <img src="../white instagram icon.webp" alt="Instagram" class="w-6 h-6 instagram-icon">
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    
+        <style>        /* Hide marquee on this page */
+        .marquee {
+            display: none !important;
+        }
+        
+        main {
+            padding-bottom: 0 !important;
+        }
+
+        /* Simple layout with sticky card stack */
+        .fsf-page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+        
+        .fsf-content {
+            flex: 1;
+            max-width: 600px;
+            min-width: 0;
+        }
+        
+        /* Two-column flex layout container */
+        .fsf-two-column {
+            display: flex;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            align-items: flex-start;
+        }
+        
+        /* Sticky sidebar - scrolls with page but sticks at top */
+        .fsf-sidebar {
+            position: sticky;
+            top: 100px;
+            width: 480px;
+            flex-shrink: 0;
+            z-index: 10;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center center;
+            align-self: flex-start;
+        }
+        
+        /* When at bottom - center and enlarge */
+        .fsf-sidebar.at-bottom {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            right: auto;
+            transform: translate(-50%, -50%) scale(1.3);
+            width: 600px;
+            z-index: 100;
+        }
+        
+        /* Backdrop when enlarged */
+        .fsf-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(242, 240, 239, 0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            z-index: 50;
+        }
+        
+        .fsf-backdrop.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Fullscreen button */
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 10;
+            transition: background 0.2s;
+        }
+        
+        .fullscreen-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Navigation position adjustment */
+        .card-stack-controls {
+            margin-top: 1rem;
+        }
+        
+        /* Card stack styles */
+        .card-stack-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .card-stack {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            perspective: 1000px;
+            cursor: grab;
+            user-select: none;
+        }
+        
+        .card-stack:active {
+            cursor: grabbing;
+        }
+        
+        .card-stack-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .card-stack-card.dragging {
+            transition: none;
+        }
+        
+        .card-stack-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .card-nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #A30000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .card-nav-btn:hover:not(:disabled) {
+            background: #8B0000;
+            transform: scale(1.1);
+        }
+        
+        .card-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .card-counter {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #333;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        /* Mobile: stack vertically */
+        @media (max-width: 1024px) {
+            .fsf-content {
+                max-width: 100%;
+                padding-right: 0;
+            }
+            
+            .fsf-sidebar {
+                position: relative;
+                top: 0;
+                right: auto;
+                width: 100%;
+                max-width: 500px;
+                margin: 2rem auto;
+            }
+            
+            .fsf-sidebar.at-bottom {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                width: 100%;
+            }
+        }
+    </style>
+<main class="flex-grow" id="main-container"
+        style="background-color: var(--bg-primary); color: var(--text-primary);">
+        <div class="w-full max-w-6xl mx-auto p-6 sm:p-8">
+                        <!-- Header Section -->
+            <div class="text-center mb-16">
+                <h1 class="text-5xl font-bold tracking-tight text-[#A30000] mb-6">Fashion Scholarship Fund (FSF) 2026</h1>
+                <p class="text-2xl text-black mb-8">Merchandising Case Study — Winner</p>
+                <p class="text-lg text-black max-w-4xl mx-auto leading-relaxed">
+                    This project is my <strong>winning case study for the Fashion Scholarship Fund (FSF) 2026 Merchandising Competition</strong>, one of the most selective and prestigious pipelines into the fashion and retail industry. FSF partners directly with leading global brands and evaluates students on their ability to think strategically across consumer insight, merchandising, digital innovation, and business impact.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Two Column Layout -->
+        <div id="fsf-backdrop" class="fsf-backdrop"></div>
+        <div class="fsf-page-container">
+        <!-- Two Column Layout -->
+        <div class="fsf-two-column">
+            <!-- Left Column: Content -->
+            <div class="fsf-content">
+            
+            <!-- Project Overview -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold mb-4 text-[#A30000]">Project Overview</h3>
+                <p class="text-lg text-black leading-relaxed mb-4">
+                    My submission was developed in response to the <strong>FSF 2026 Merchandising Brief</strong>, which challenges students to create a forward-looking, data-driven merchandising strategy grounded in real industry constraints and emerging consumer behavior. The case study was recognized for its depth of research, originality, and ability to connect technology, culture, and commerce into a cohesive retail vision.
+                </p>
+            </div>
+
+            <!-- About FSF Competition -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold mb-4 text-[#A30000]">About the Fashion Scholarship Fund Competition</h3>
+                <p class="text-lg text-black leading-relaxed mb-4">
+                    The Fashion Scholarship Fund is a national nonprofit that supports and identifies top talent in fashion, retail, and business. Each year, FSF selects a small group of finalists across multiple tracks (Merchandising, Design, Marketing, Supply Chain) based on rigorous written case studies reviewed by executives from companies such as Nike, Adidas, Google, LVMH, and Estée Lauder.
+                </p>
+                <p class="text-lg text-black leading-relaxed mb-4">
+                    Winning the <strong>FSF 2026 Merchandising Track</strong> signifies demonstrated excellence in:
+                </p>
+                <ul class="space-y-2 mb-8">
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Strategic merchandising and assortment planning</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Consumer and market analysis</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Financial literacy and retail KPIs</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Omnichannel and digital retail thinking</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Clear storytelling and executive-level communication</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Case Study Focus -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold mb-4 text-[#A30000]">Case Study Focus</h3>
+                <p class="text-lg text-black leading-relaxed mb-4">
+                    This case study explores how modern brands can <strong>merge performance, lifestyle, and technology</strong> to meet evolving consumer expectations around personalization, convenience, and cultural relevance.
+                </p>
+                <p class="text-lg text-black leading-relaxed mb-4">The work centers on:</p>
+                <ul class="space-y-2 mb-8">
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Translating macro consumer trends into actionable merchandising strategy</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Designing assortments that balance innovation with commercial viability</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Leveraging digital tools and AI-driven insights to enhance retail decision-making</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Building a scalable, omnichannel ecosystem that connects product, platform, and experience</span>
+                    </li>
+                </ul>
+                <p class="text-lg text-black leading-relaxed">
+                    Rather than treating merchandising as purely operational, this project frames it as a <strong>creative and strategic discipline</strong> that shapes how consumers discover, value, and engage with products.
+                </p>
+            </div>
+
+            <!-- Research & Methodology -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold mb-4 text-[#A30000]">Research & Methodology</h3>
+                <p class="text-lg text-black leading-relaxed mb-4">The case study is grounded in multi-layered research, including:</p>
+                <ul class="space-y-2 mb-8">
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Industry reports and earnings transcripts</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Consumer behavior and cultural trend analysis</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Competitive landscape and brand positioning audits</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Retail innovation and emerging technology research</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Financial modeling, KPIs, and six-month rollout planning</span>
+                    </li>
+                </ul>
+                <p class="text-lg text-black leading-relaxed">
+                    Insights were synthesized into a clear merchandising narrative that connects <strong>consumer need → product strategy → distribution → experience → business outcomes</strong>.
+                </p>
+            </div>
+
+            <!-- Key Deliverables -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold mb-4 text-[#A30000]">Key Deliverables</h3>
+                <ul class="space-y-2 mb-8">
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Executive Summary and Strategic Thesis</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Consumer Segmentation and Target Profiles</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Competitive and Market Analysis</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Product Assortment Strategy</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Merchandise Planning and KPI Framework</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Omnichannel Distribution and Retail Experience Strategy</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Launch Roadmap and Future Growth Vision</span>
+                    </li>
+                </ul>
+                <p class="text-lg text-black leading-relaxed">
+                    Each section was designed to mirror how merchandising strategy is presented internally at global brands, prioritizing clarity, feasibility, and impact.
+                </p>
+            </div>
+
+            <!-- Outcome & Recognition -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold mb-4 text-[#A30000]">Outcome & Recognition</h3>
+                <p class="text-lg text-black leading-relaxed mb-4">
+                    This project was selected as a <strong>winning submission for the FSF 2026 Merchandising Competition</strong>, earning recognition from industry judges and positioning me as a <strong>Fashion Scholarship Fund Scholar</strong>.
+                </p>
+                <p class="text-lg text-black leading-relaxed">
+                    The case study reflects my ability to operate at the intersection of <strong>fashion, technology, and business strategy</strong>, and represents the foundation of my approach to modern merchandising: analytical, culturally fluent, and future-facing.
+                </p>
+            </div>
+
+            <!-- Skills Demonstrated -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold mb-4 text-[#A30000]">Skills Demonstrated</h3>
+                <ul class="space-y-2 mb-8">
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Merchandising Strategy & Assortment Architecture</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Consumer Insight & Trend Translation</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Retail Financial Planning & KPIs</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Omnichannel & Digital Commerce Strategy</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-[#A30000] rounded-full"></div>
+                        <span class="text-black">Strategic Storytelling & Executive Presentation</span>
+                    </li>
+                </ul>
+                <p class="text-sm text-gray-600 italic">
+                    This project was completed independently as part of the Fashion Scholarship Fund 2026 national competition.
+                </p>
+            </div>
+
+
+            
+            </div>
+            
+            <!-- Right Column: Sticky Card Stack -->
+            <div class="fsf-sidebar" id="fsf-sidebar">
+                <h3 class="text-xl font-bold mb-3 text-[#A30000]">Case Study Document</h3>
+                <p class="text-sm text-black mb-4 leading-relaxed">
+                    Scroll or drag through the slides.
+                </p>
+                
+                <!-- Card Stack Container -->
+                <div class="card-stack-wrapper">
+                    <div class="card-stack" id="card-stack">
+                        <button class="fullscreen-btn" id="fullscreen-btn" title="Toggle fullscreen">⛶</button>
+                        <!-- Cards will be generated by JavaScript -->
+                    </div>
+                    
+                    <!-- Navigation Controls -->
+                    <div class="card-stack-controls">
+                        <button id="prev-card" class="card-nav-btn" aria-label="Previous slide">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="card-counter">
+                            <span id="current-card">1</span> / <span id="total-cards">22</span>
+                        </div>
+                        <button id="next-card" class="card-nav-btn" aria-label="Next slide">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Download Button -->
+                    <div class="mt-3 text-center">
+                        <a href="FSF_Merchandising_Case_2026.pdf" download
+                            class="inline-flex items-center space-x-2 px-3 py-1.5 bg-[#A30000] text-white rounded-lg hover:bg-[#8B0000] transition-colors duration-300 text-xs font-medium">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
+                            <span>Download PDF</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div><!-- close two-column -->
+        </div><!-- close fsf-page-container --></main>
+
+    <!-- Fixed bottom marquee -->
+    <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+            <div class="marquee__item">Some of my thoughts recently: People wear clothes like armor, not because they're
+                cold but because they're scared of being seen for what they are, unfinished. Every thread says something
+                about how far we've drifted from our own expression. Fashion started as protection, then communication,
+                now it's performance. We forgot what we were trying to say. People talk about wanting authenticity, but
+                no one really wants to be seen mid-process. We like the illusion of rawness, not the mess it takes to
+                get there.</div>
+            <div class="marquee__item">Everything about life contradicts itself. We chase freedom through structure. We
+                find identity in repetition. We call our screens a window to the world while the world keeps shrinking
+                behind them. People want to escape systems but still need something to belong to. That's the joke,
+                everything that frees us also traps us. We hate the artificial but live through it anyway. It's not
+                fake, it's just another layer of survival. Pretending might be the only thing that keeps us human.</div>
+            <div class="marquee__item">Every invention feels like an echo. We build machines to talk for us, then forget
+                what silence sounds like. We automate feeling, and it leaves us starving for the real thing. We keep
+                trying to design empathy into the system, but maybe the system was never supposed to care. It's all
+                theater, but that doesn't make it meaningless. It's still a stage where we can rehearse being alive,
+                over and over, until it feels right again.</div>
+            <div class="marquee__item">I work inside that space, between art and survival, between code and soul. I'm
+                not trying to fix the contradiction. I'm trying to live in it. The goal isn't harmony, it's awareness.
+                To notice the glitch and still make something from it. To build a world that doesn't exist yet and
+                remind myself that creation is the only honest way to lie. Every mask, every prototype, every render is
+                proof that I'm still learning how to translate being into form.</div>
+            <!-- duplicate for seamless loop -->
+            <div class="marquee__item">Some of my thoughts recently: People wear clothes like armor, not because they're
+                cold but because they're scared of being seen for what they are, unfinished. Every thread says something
+                about how far we've drifted from our own expression. Fashion started as protection, then communication,
+                now it's performance. We forgot what we were trying to say. People talk about wanting authenticity, but
+                no one really wants to be seen mid-process. We like the illusion of rawness, not the mess it takes to
+                get there.</div>
+            <div class="marquee__item">Everything about life contradicts itself. We chase freedom through structure. We
+                find identity in repetition. We call our screens a window to the world while the world keeps shrinking
+                behind them. People want to escape systems but still need something to belong to. That's the joke,
+                everything that frees us also traps us. We hate the artificial but live through it anyway. It's not
+                fake, it's just another layer of survival. Pretending might be the only thing that keeps us human.</div>
+            <div class="marquee__item">Every invention feels like an echo. We build machines to talk for us, then forget
+                what silence sounds like. We automate feeling, and it leaves us starving for the real thing. We keep
+                trying to design empathy into the system, but maybe the system was never supposed to care. It's all
+                theater, but that doesn't make it meaningless. It's still a stage where we can rehearse being alive,
+                over and over, until it feels right again.</div>
+            <div class="marquee__item">I work inside that space, between art and survival, between code and soul. I'm
+                not trying to fix the contradiction. I'm trying to live in it. The goal isn't harmony, it's awareness.
+                To notice the glitch and still make something from it. To build a world that doesn't exist yet and
+                remind myself that creation is the only honest way to lie. Every mask, every prototype, every render is
+                proof that I'm still learning how to translate being into form.</div>
+        </div>
+    </div>
+
+    <script src="../scripts.js"></script>
+    <script src="../projects-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for red theme URL path
+            if (window.location.pathname.includes('/red')) {
+                document.body.classList.add('red-theme');
+            }
+
+            // Get current file path for live editing
+            window.currentPagePath = 'fashion-scholarship-fund/index.html';
+
+            // Card Stack Viewer
+            initCardStack();
+        });
+
+        // Fullscreen toggle
+        function toggleFullscreen() {
+            const wrapper = document.querySelector('.card-stack-wrapper');
+            if (!document.fullscreenElement) {
+                wrapper.requestFullscreen().catch(err => console.log(err));
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // Setup fullscreen button
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('fullscreen-btn');
+            if (btn) btn.addEventListener('click', toggleFullscreen);
+        });
+        
+        function initCardStack() {
+            const cardStack = document.getElementById('card-stack');
+            if (!cardStack) return;
+
+            const totalSlides = 22;
+            let currentIndex = 0;
+            let isDragging = false;
+            let startX = 0;
+            let startY = 0;
+            let dragOffset = 0;
+
+            // Generate card elements
+            for (let i = 0; i < totalSlides; i++) {
+                const card = document.createElement('div');
+                card.className = 'card-stack-card';
+                card.dataset.index = i;
+
+                const img = document.createElement('img');
+                img.src = `slides/slide-${String(i + 1).padStart(2, '0')}.webp`;
+                img.alt = `Slide ${i + 1}`;
+                img.draggable = false;
+
+                card.appendChild(img);
+                cardStack.appendChild(card);
+            }
+
+            const cards = cardStack.querySelectorAll('.card-stack-card');
+            const prevBtn = document.getElementById('prev-card');
+            const nextBtn = document.getElementById('next-card');
+            const currentCardSpan = document.getElementById('current-card');
+            const totalCardsSpan = document.getElementById('total-cards');
+
+            totalCardsSpan.textContent = totalSlides;
+
+            // Update card positions and styles
+            function updateCards() {
+                cards.forEach((card, i) => {
+                    const offset = i - currentIndex;
+
+                    if (offset < 0) {
+                        // Cards that have been passed (behind)
+                        card.style.transform = `translateY(-100%) scale(0.9)`;
+                        card.style.opacity = '0';
+                        card.style.zIndex = i;
+                        card.style.filter = 'brightness(0.7)';
+                    } else if (offset === 0) {
+                        // Current card (front)
+                        card.style.transform = `translateY(${dragOffset}px) scale(1)`;
+                        card.style.opacity = '1';
+                        card.style.zIndex = totalSlides - offset;
+                        card.style.filter = 'brightness(1)';
+                    } else if (offset <= 4) {
+                        // Cards in the stack (visible behind)
+                        const yOffset = offset * 15;
+                        const scale = 1 - (offset * 0.04);
+                        const brightness = 1 - (offset * 0.1);
+
+                        card.style.transform = `translateY(${yOffset}px) scale(${scale})`;
+                        card.style.opacity = offset <= 3 ? '1' : '0.5';
+                        card.style.zIndex = totalSlides - offset;
+                        card.style.filter = `brightness(${brightness})`;
+                    } else {
+                        // Cards far in the stack (hidden)
+                        card.style.transform = `translateY(80px) scale(0.8)`;
+                        card.style.opacity = '0';
+                        card.style.zIndex = 0;
+                        card.style.filter = 'brightness(0.5)';
+                    }
+                });
+
+                currentCardSpan.textContent = currentIndex + 1;
+
+                // Update button states
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === totalSlides - 1;
+            }
+
+            function goToCard(index) {
+                currentIndex = Math.max(0, Math.min(totalSlides - 1, index));
+                dragOffset = 0;
+                updateCards();
+            }
+
+            function nextCard() {
+                if (currentIndex < totalSlides - 1) {
+                    goToCard(currentIndex + 1);
+                }
+            }
+
+            function prevCard() {
+                if (currentIndex > 0) {
+                    goToCard(currentIndex - 1);
+                }
+            }
+
+            // Button navigation
+            prevBtn.addEventListener('click', prevCard);
+            nextBtn.addEventListener('click', nextCard);
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    nextCard();
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    prevCard();
+                }
+            });
+
+            // Scroll navigation - detects and ignores trackpad momentum
+            let scrollLocked = false;
+            let lastWheelTime = 0;
+            
+            cardStack.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const now = Date.now();
+                const timeDiff = now - lastWheelTime;
+                
+                // Detect momentum: events coming within 100ms of each other
+                const isMomentum = timeDiff < 100 && timeDiff > 0;
+                
+                lastWheelTime = now;
+                
+                // Ignore momentum events and locked state
+                if (isMomentum || scrollLocked) return;
+                
+                // Lock and navigate
+                scrollLocked = true;
+                
+                if (e.deltaY > 0) {
+                    nextCard();
+                } else if (e.deltaY < 0) {
+                    prevCard();
+                }
+                
+                // Unlock after animation completes
+                setTimeout(() => {
+                    scrollLocked = false;
+                }, 400);
+            }, { passive: false });
+
+            // Drag navigation
+            function handleDragStart(e) {
+                isDragging = true;
+                startY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
+                startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+
+                cards[currentIndex].classList.add('dragging');
+            }
+
+            function handleDragMove(e) {
+                if (!isDragging) return;
+
+                const currentY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
+                const currentX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+
+                dragOffset = currentY - startY;
+
+                // Update current card position during drag
+                const currentCard = cards[currentIndex];
+                currentCard.style.transition = 'none';
+                currentCard.style.transform = `translateY(${dragOffset}px) scale(1)`;
+            }
+
+            function handleDragEnd(e) {
+                if (!isDragging) return;
+                isDragging = false;
+
+                const currentCard = cards[currentIndex];
+                currentCard.classList.remove('dragging');
+                currentCard.style.transition = '';
+
+                const threshold = 80; // pixels to trigger card change
+
+                if (dragOffset < -threshold && currentIndex < totalSlides - 1) {
+                    // Swiped up - go to next
+                    currentIndex++;
+                } else if (dragOffset > threshold && currentIndex > 0) {
+                    // Swiped down - go to previous
+                    currentIndex--;
+                }
+
+                dragOffset = 0;
+                updateCards();
+            }
+
+            // Mouse events
+            cardStack.addEventListener('mousedown', handleDragStart);
+            document.addEventListener('mousemove', handleDragMove);
+            document.addEventListener('mouseup', handleDragEnd);
+
+            // Touch events
+            cardStack.addEventListener('touchstart', handleDragStart, { passive: true });
+            document.addEventListener('touchmove', handleDragMove, { passive: true });
+            document.addEventListener('touchend', handleDragEnd);
+
+            // Initialize
+            updateCards();
+        }
+
+        
+        // ============================================================================
+        // SCROLL DETECTION - Three phases: aligned, centered, enlarged
+        // ============================================================================
+        
+        function setupScrollExpansion() {
+            const sidebar = document.getElementById('fsf-sidebar');
+            const fsfContent = document.querySelector('.fsf-content');
+            const backdrop = document.getElementById('fsf-backdrop');
+            
+            if (!sidebar || !fsfContent) return;
+            
+            // Apply will-change for smooth animation
+            sidebar.style.willChange = 'transform';
+            
+            function checkScroll() {
+                const scrollY = window.scrollY;
+                const viewportHeight = window.innerHeight;
+                const contentRect = fsfContent.getBoundingClientRect();
+                
+                // Phase thresholds
+                const startCenteringAt = 150;
+                const isAtBottom = contentRect.bottom < viewportHeight - 50;
+                
+                // Phase 1: At top - aligned with Project Overview
+                if (scrollY < startCenteringAt) {
+                    sidebar.classList.remove('centered');
+                    sidebar.classList.remove('at-bottom');
+                    backdrop?.classList.remove('visible');
+                }
+                // Phase 3: At bottom - enlarged and centered
+                else if (isAtBottom) {
+                    sidebar.classList.add('centered');
+                    sidebar.classList.add('at-bottom');
+                    backdrop?.classList.add('visible');
+                }
+                // Phase 2: Mid-scroll - centered in viewport
+                else {
+                    sidebar.classList.add('centered');
+                    sidebar.classList.remove('at-bottom');
+                    backdrop?.classList.remove('visible');
+                }
+            }
+            
+            // Passive scroll listener
+            window.addEventListener('scroll', checkScroll, { passive: true });
+            window.addEventListener('resize', checkScroll, { passive: true });
+            
+            // Initial check
+            checkScroll();
+            
+            // Click backdrop to scroll back up
+            backdrop?.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', setupScrollExpansion);
+    </script>
+</body>
+
+</html>

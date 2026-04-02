@@ -15,14 +15,15 @@ export interface NodeData {
   pulseDelay?: number;
   videoUrl?: string;
   shortDesc: string;
+  images?: { src: string; alt: string; caption?: string }[];
   content: {
     sectionTag: string;
     titleFirst: string;
     titleEm: string;
     paragraphs?: string[];
     stats?: { value: string; label: string }[];
-    items?: { label: string; title: string; desc: string }[];
-    people?: { name: string; role: string; desc: string }[];
+    items?: { label: string; title: string; desc: string; images?: { src: string; alt: string; caption?: string }[] }[];
+    people?: { name: string; role: string; desc: string; image?: string }[];
     networkNote?: string;
     thoughts?: string[];
     showInvitation?: boolean;
@@ -44,6 +45,7 @@ export const nodes: NodeData[] = [
     pulseDelay: 0,
     videoUrl: '/videos/nalana-demo.mp4',
     shortDesc: 'Voice-controlled 3D design tool',
+    images: [], // TODO: add Nalana screenshots or demo stills
     content: {
       sectionTag: '01 — Currently Building',
       titleFirst: 'What I\'m',
@@ -108,13 +110,15 @@ export const nodes: NodeData[] = [
         'Sidian taught me how shoes are actually designed. The tolerances, the geometry, the way a last translates into a wearable object. I designed and produced six wearable pairs from scratch. That knowledge lives inside Nalana now — I\'m not building a tool for a problem I read about. I\'m building a tool for a process I know intimately.'
       ],
       items: [
-        { label: '2025–Present', title: 'Nalana', desc: 'Voice-controlled 3D design tool. Production-ready geometry. Built on Blender. Interest from Nike Innovation, USC NVSC quarterfinals.' },
-        { label: '2025', title: 'Sidian', desc: 'A complete line of 3D printed shoes. Designed, modeled, printed, and worn. Six pairs. Every step done by hand. The most important thing I\'ve built for understanding what Nalana needs to be.' },
-        { label: '2024-2025', title: 'Honda Innovation', desc: 'Speculative vehicle concept design inside one of the world\'s most recognized industrial design organizations. Junior designer. Real constraints, real process.' },
-        { label: '2023–2024', title: 'MATTE Projects', desc: 'Retail displays and product visualizations for Cartier, Macallan, Vans. The first time my work existed in rooms I wasn\'t in.' },
-        { label: '2025', title: 'FSF National Case Study', desc: 'Won nationally. A 21-slide strategy reimagining Adidas\' product ecosystem through AI wearables and cross-category storytelling. Named a Virgil Abloh "Post-Modern" Scholar.' },
-        { label: '2024', title: 'Google Makeathon', desc: 'Won. Built something that worked under pressure with people I\'d never met before.' },
-        { label: '2025', title: 'Faith in MDVS', desc: 'Cactus Jack Design Competition entry. Oversized leather muscle tee. Spiritual expression and intentional mark-making.' }
+        { label: '2025–Present', title: 'Nalana', desc: 'Voice-controlled 3D design tool. Production-ready geometry. Built on Blender. Interest from Nike Innovation, USC NVSC quarterfinals.', images: [] },
+        { label: '2025', title: 'Sidian', desc: 'A complete line of 3D printed shoes. Designed, modeled, printed, and worn. Six pairs. Every step done by hand. The most important thing I\'ve built for understanding what Nalana needs to be.', images: [{src: '/images/projects/sidian/edited-newarc-render.webp', alt: 'Sidian'}, {src: '/images/projects/sidian/heel-boot-1.webp', alt: 'Sidian'}, {src: '/images/projects/sidian/heel-boot-2.webp', alt: 'Sidian'}, {src: '/images/projects/sidian/heel-boot-3.webp', alt: 'Sidian'}] },
+        { label: '2024-2025', title: 'Honda Innovation', desc: 'Speculative vehicle concept design inside one of the world\'s most recognized industrial design organizations. Junior designer. Real constraints, real process.', images: [{src: '/images/projects/honda/toy1-1.webp', alt: 'Honda Innovation'}, {src: '/images/projects/honda/toy1-2.webp', alt: 'Honda Innovation'}, {src: '/images/projects/honda/toy1-3.webp', alt: 'Honda Innovation'}, {src: '/images/projects/honda/toy1-4.webp', alt: 'Honda Innovation'}] },
+        { label: '2023–2024', title: 'MATTE Projects', desc: 'Retail displays and product visualizations for Cartier, Macallan, Vans. The first time my work existed in rooms I wasn\'t in.', images: [] },
+        { label: '2025', title: 'FSF National Case Study', desc: 'Won nationally. A 21-slide strategy reimagining Adidas\' product ecosystem through AI wearables and cross-category storytelling. Named a Virgil Abloh "Post-Modern" Scholar.', images: [{src: '/images/projects/fsf/slide-01.webp', alt: 'FSF Slide 1'}, {src: '/images/projects/fsf/slide-02.webp', alt: 'FSF Slide 2'}, {src: '/images/projects/fsf/slide-03.webp', alt: 'FSF Slide 3'}] },
+        { label: '2024', title: 'Google Makeathon', desc: 'Won. Built something that worked under pressure with people I\'d never met before.', images: [] },
+        { label: '2025', title: 'Faith in MDVS', desc: 'Cactus Jack Design Competition entry. Oversized leather muscle tee. Spiritual expression and intentional mark-making.', images: [] },
+        { label: 'Previous', title: 'Accessories', desc: 'Various jewelry and accessory designs from my portfolio.', images: [{src: '/images/projects/accessories/buldgeglasses-1.webp', alt: 'Accessories'}, {src: '/images/projects/accessories/buldgeglasses-2.webp', alt: 'Accessories'}] },
+        { label: 'Previous', title: 'Masks', desc: 'Custom mask designs exploring form and material.', images: [{src: '/images/projects/masks/blackeye-1.webp', alt: 'Masks'}, {src: '/images/projects/masks/blackeye-2.webp', alt: 'Masks'}] }
       ]
     }
   },
@@ -156,6 +160,7 @@ export const nodes: NodeData[] = [
     bgGrad: `linear-gradient(135deg, #F8FEF0 0%, #F4FCE8 100%)`,
     pulseDelay: 1.6,
     shortDesc: 'I\'m from Chicago. I\'ve always guided my own ship.',
+    images: [{src: '/images/me/IMG_3850.webp', alt: 'Clarence'}, {src: '/images/me/IMG_0947.webp', alt: 'Clarence'}],
     content: {
       sectionTag: '05 — Origin',
       titleFirst: 'Where I\'m',
@@ -195,11 +200,11 @@ export const nodes: NodeData[] = [
         'The people around me aren\'t decorations. They\'re active inputs into how I think and what I build.'
       ],
       people: [
-        { name: 'Matthew Rowean', role: 'Founder, MATTE Projects', desc: 'He came from a creative background and built a company that produces real work for real clients at scale. I\'ve talked to him a lot about the tension between creative identity and company building — and those conversations hit differently now that I\'m living that tension myself. When I was in a period where I wasn\'t executing my ideas to the extent I wanted to, he told me to just do it. Simple. But it reignited something. He\'s going to be an important one as Nalana grows.' },
-        { name: 'Adam Hiler', role: 'Senior Director of 3D Excellence, Jordan Brand', desc: 'He operates at the highest level of 3D design in the industry and chose to advise Nalana. That means something. He understands exactly what the tool needs to be.' },
-        { name: 'Aven Wright', role: 'Senior Manager, Jordan Brand Global', desc: 'My FSF mentor. He\'s shown me what it looks like to lead with taste inside a massive institution without losing the taste.' },
-        { name: 'Eric Quick', role: 'CEO of Caffree, IYA Alum, Lecturer', desc: 'The clearest thinker I know about what it actually takes to build a company from a creative practice. Every conversation recalibrates something.' },
-        { name: 'Ghadi Nehme', role: 'MIT DeCoDE Lab', desc: 'The bridge between where AI and design research is heading academically and where Nalana is going practically.' }
+        { name: 'Matthew Rowean', role: 'Founder, MATTE Projects', desc: 'He came from a creative background and built a company that produces real work for real clients at scale. I\'ve talked to him a lot about the tension between creative identity and company building — and those conversations hit differently now that I\'m living that tension myself. When I was in a period where I wasn\'t executing my ideas to the extent I wanted to, he told me to just do it. Simple. But it reignited something. He\'s going to be an important one as Nalana grows.', image: '/images/people/matthew-rowean.svg' },
+        { name: 'Adam Hiler', role: 'Senior Director of 3D Excellence, Jordan Brand', desc: 'He operates at the highest level of 3D design in the industry and chose to advise Nalana. That means something. He understands exactly what the tool needs to be.', image: '/images/people/adam-hiler.svg' },
+        { name: 'Aven Wright', role: 'Senior Manager, Jordan Brand Global', desc: 'My FSF mentor. He\'s shown me what it looks like to lead with taste inside a massive institution without losing the taste.', image: '/images/people/aven-wright.svg' },
+        { name: 'Eric Quick', role: 'CEO of Caffree, IYA Alum, Lecturer', desc: 'The clearest thinker I know about what it actually takes to build a company from a creative practice. Every conversation recalibrates something.', image: '/images/people/eric-quick.svg' },
+        { name: 'Ghadi Nehme', role: 'MIT DeCoDE Lab', desc: 'The bridge between where AI and design research is heading academically and where Nalana is going practically.', image: '/images/people/ghadi-nehme.svg' }
       ],
       networkNote: 'These aren\'t people I name-drop. They\'re people who have given me real time, real feedback, and real belief. That\'s a different thing.'
     }
