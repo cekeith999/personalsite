@@ -31,9 +31,9 @@ module.exports = {
         },
         ink: {
           DEFAULT: '#1A1410',
-          soft: '#3D3028',
+          soft: '#251C1A',
         },
-        muted: '#8A7A6A',
+        muted: '#5C5146',
         border: 'rgba(232,148,58,0.15)',
       },
       fontFamily: {

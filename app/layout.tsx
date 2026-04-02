@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     images: ['/images/og-image.jpg'],
   },
   robots: { index: true, follow: true },
-  icons: { icon: '/favicon.ico' },
+  icons: { icon: '/favicon.webp' },
 };
 
 export default function RootLayout({

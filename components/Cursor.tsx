@@ -57,6 +57,8 @@ export default function Cursor() {
       <motion.div
         className="fixed top-0 left-0 rounded-full pointer-events-none z-[10000] origin-center"
         style={{
+          width: 10,
+          height: 10,
           x: mouseX,
           y: mouseY,
           translateX: '-50%',
@@ -64,14 +66,15 @@ export default function Cursor() {
           backgroundColor: '#2D1B6E',
         }}
         animate={{
-          width: isHovering ? 6 : 10,
-          height: isHovering ? 6 : 10,
+          scale: isHovering ? 0.6 : 1,
         }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       />
       <motion.div
         className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] origin-center"
         style={{
+          width: 36,
+          height: 36,
           x: ringX,
           y: ringY,
           translateX: '-50%',
@@ -80,8 +83,7 @@ export default function Cursor() {
           borderWidth: 1,
         }}
         animate={{
-          width: isHovering ? 56 : 36,
-          height: isHovering ? 56 : 36,
+          scale: isHovering ? 1.55 : 1,
           borderColor: isHovering ? 'rgba(124,111,224,0.8)' : 'rgba(124,111,224,0.4)',
         }}
         transition={{

@@ -1,0 +1,11 @@
+feat: implement draggable nodes and major content overhaul
+
+- Add full drag-and-drop physics to all canvas nodes
+- Implement robust click-vs-drag disambiguation
+- Update SVG connection lines to dynamically track dragged nodes
+- Add breathing glow animation to center photo node
+- Sync center ring shadow pulse with breathing effect
+- Overhaul entire site copy and node data in nodes.ts
+- Darken typography globally for improved contrast
+- Add new headshot, favicon, and project video assets
+- Generate SITE_CONTEXT.md for comprehensive AI reference
