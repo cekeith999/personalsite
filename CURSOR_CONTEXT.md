@@ -95,7 +95,7 @@ The personal site and the product feel like the same universe.
   globals.css
 /public
   /images
-    clarence.jpg            ← real photo (add when ready)
+    Mehead.webp             ← real photo for center node
     og-image.jpg            ← OG image for social sharing
 ```
 

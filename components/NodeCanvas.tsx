@@ -167,7 +167,7 @@ export default function NodeCanvas({ onNodeOpen }: { onNodeOpen: (id: string) =>
               }}
             >
               <div className="w-full h-full bg-cream rounded-full overflow-hidden flex items-center justify-center relative">
-                <img src="/images/clarence.webp" alt="Clarence" className="w-full h-full object-cover" />
+                <img src="/images/Mehead.webp" alt="Clarence" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="mt-3 font-mono text-sm tracking-[0.25em] uppercase text-[#251C33]">
