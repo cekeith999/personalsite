@@ -34,8 +34,16 @@ export default function Node({ node, onOpen, initialX, initialY, onPositionChang
 
   return (
     <motion.div
-      className="absolute -translate-x-1/2 -translate-y-1/2 touch-none pointer-events-auto"
-      style={{ left: initialX, top: initialY, x, y, cursor: isDragging ? 'grabbing' : 'grab' }}
+      className="absolute touch-none pointer-events-auto"
+      style={{ 
+        left: initialX, 
+        top: initialY, 
+        marginLeft: -(node.size / 2),
+        marginTop: -(node.size / 2),
+        x, 
+        y, 
+        cursor: isDragging ? 'grabbing' : 'grab' 
+      }}
       drag
       dragMomentum={false}
       dragElastic={0.08}
